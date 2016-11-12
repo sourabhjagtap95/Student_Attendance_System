@@ -1,0 +1,50 @@
+<?php
+session_start();
+require_once('header_after_login.php');
+?>
+    <style type="text/css">
+body{
+                background-image: url(bg.jpg);
+                background-repeat: no-repeat;
+                background-size: cover;
+        }
+    </style>
+</head>
+<body>
+<?php
+    $date = $_POST['date'];
+    $month = $_POST['month'];
+    //$year = $_POST['year'];
+    $time = $_POST['time'];
+    
+    $conn = mysql_connect("localhost","root","");
+    mysql_select_db("project_new",$conn);
+
+    
+    if(isset($_POST['presentee']))
+    {
+        $value_arr = $_POST['presentee'];
+        $value = implode(",", $value_arr);
+       
+        $subject = $_SESSION['theory_a'];
+        $i=0;
+        while($i<(2*(count($value_arr))-1))
+        {
+            if($_SESSION['division_for_attendance']=="A")
+            {
+                $query="insert into attendance_theory_a values('".$value[$i]."','$subject','$date','$month','$time')";
+                mysql_query($query) or die(mysql_error($conn));
+            }
+            else
+            {
+                $query1="insert into attendance_theory_b values('".$value[$i]."','$subject','$date','$month','$time')";
+                mysql_query($query1) or die(mysql_error($conn));    
+            }
+            $i+=2;
+        }
+    }
+    
+        
+?>
+</body>
+</html>

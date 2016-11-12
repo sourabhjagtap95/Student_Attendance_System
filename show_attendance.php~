@@ -1,0 +1,225 @@
+<?php
+session_start();
+require_once('header_after_login.php');
+?>
+    <style type="text/css">
+
+    	
+           
+        .logo img{
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            height: 50px;
+            width: 50px;
+        }
+        p 
+        {
+        	text-align: center;	
+        	font-size: 50px;
+        	font: Arial;
+        }
+        .login{
+        height: 50px;
+        text-align: center;
+        font-size: 20px;
+        color:green;
+    }
+    .card
+    {
+        width: auto;
+        height: auto;
+    }
+    .form
+    {
+        background-color: #fff;
+        border-radius: 5px;
+        margin: 0 auto 25px;
+        width: 600px;
+        text-align: center;
+        padding: 20px 20px 30px;
+        box-shadow: 1px 1px 10px black;
+    }
+    fieldset { 
+    display: block;
+    margin-left: 2px;
+    margin-right: 2px;
+    padding-top: 1em;
+    padding-bottom: 5em;
+    padding-left: 0.75em;
+    padding-right: 0.75em;
+    font-family: inherit;
+}
+body{
+                background-image: url(bg.jpg);
+                background-repeat: no-repeat;
+                background-size: cover;
+        }
+    </style>
+</head>
+<body>
+
+
+
+<div class="container">
+    <br><p><strong>View Attendance</strong></p><br>
+    <div class="container">
+        <form class="form-inline" role="form" action="show_attendance.php" method="POST">
+        
+   
+             <?php
+            
+                $server = mysql_connect("localhost","root", "");
+                 mysql_select_db("project_new",$server);
+
+              if (isset($_POST['theory_a']))
+              {
+                $th_id_a = $_SESSION['theory_a'];
+                $_SESSION['division_for_attendance']="A";
+
+                $th_a = mysql_query("select * from studentinfo where division='A'");
+                echo "<div class='text-center'>";
+                echo "<legend><strong><h3>Year: T.E &nbsp;&nbsp;&nbsp;&nbsp;Division : A</h3></strong></legend>";
+                echo "</div>";
+                echo "<div class='table-responsive' >";
+                echo "<table class='table table-hover table-bordered' style='width:auto; margin:auto; margin-bottom:100px;'>";
+                echo "<tr>";
+                echo "<td style='width:1px;'>RollNo</td>";
+                echo "<td style='width:1px;'>Firstname</td>";
+                echo "<td style='width:1px;'>Lastname</td>";
+
+                // echo "<td>Year</td>";
+                // echo "<td>Division</td>";
+                //echo "<td>Batch</td>";
+                // echo "<td>Attendance</td>";
+                echo "</tr>";
+                echo "<tr>";
+                echo "<td></td><td></td><td></td>";
+                for ($i=1; $i < 32; $i++) { 
+                  echo "<td >".$i."</td>";
+                }
+                
+                echo "</tr>";
+                    $query= "SELECT * FROM attendance_theory_a INNER JOIN studentinfo ON
+                            attendance_theory_a.rollno=studentinfo.rollno where
+                            studentinfo.division='A' AND attendance_theory_a.subject = 1";
+                    $executed = mysql_query($query);
+                    $rows = mysql_fetch_array($executed);
+
+                while ($row = mysql_fetch_array($th_a)) 
+                {  
+                   echo "<tr>";
+                   $rollno = $row['rollno'];
+                   echo $rollno;
+                   echo "<td>".$row['rollno']."</td>";
+                   echo "<td>".$row['firstname']."</td>";
+                   echo "<td>".$row['lastname']."</td>";
+                   // echo "<td>".$row['year']."</td>";
+                   // echo "<td>".$row['division']."</td>";
+                   //echo "<td>".$row['batch']."</td>";
+                  // echo "<td><input type='checkbox' name='presentee[]' value='".$row['rollno']."'/>&nbsp;PRESENT</td>";
+                   for($r=1;$r<=$rows['rollno'];$r++)
+                   {
+                    if($rollno == $rows['rollno'])
+                    {
+                      for ($i=1; $i < 32; $i++) { 
+                        echo "<td style='color:red;'>1</td>";    
+                    }
+                  }
+                      else{
+                      for ($i=1; $i < 32; $i++) { 
+                        echo "<td>A</td>";    
+                    }
+                  }
+                    
+                  }
+                 
+                   
+                   echo "</tr>";
+                }
+                echo "</table>";
+                echo "</div>";
+              }
+              
+              elseif (isset($_POST['theory_b']))
+              {
+                $th_id_b = $_SESSION['theory_b'];
+                $_SESSION['division_for_attendance']="B";
+                $th_b = mysql_query("select * from studentinfo where division='B'");
+                echo "<div class='text-center'>";
+                echo "<legend><strong><h3>Year: T.E &nbsp;&nbsp;&nbsp;&nbsp;Division : B</h3></strong></legend>";
+                echo "</div>";
+                echo "<div class='table-responsive'>";
+                echo "<table class='table table-hover table-bordered' style='width:1000px; margin:auto; margin-bottom:100px;''>";
+                echo "<tr>";
+                echo "<td>RollNo</td>";
+                echo "<td>Firstname</td>";
+                echo "<td>Lastname</td>";
+                echo "<td>Year</td>";
+                echo "<td>Division</td>";
+                //echo "<td>Batch</td>";
+                echo "<td>Attendance</td>";
+                echo "</tr>";
+                while ($row = mysql_fetch_array($th_b)) 
+                {  
+                   echo "<tr>";
+                   echo "<td>".$row['rollno']."</td>";
+                   echo "<td>".$row['firstname']."</td>";
+                   echo "<td>".$row['lastname']."</td>";
+                   echo "<td>".$row['year']."</td>";
+                   echo "<td>".$row['division']."</td>";
+                  // echo "<td>".$row['batch']."</td>";
+                   // echo "<td><input type='checkbox' name='presentee[]' value='".$row['rollno']."'>&nbsp;PRESENT</td>";
+                   echo "</tr>";
+                }
+                echo "</table>";
+                echo "</div>";
+              } else{
+               if (isset($_POST['batch'])&&!empty($_POST['batch']))
+              {
+		$q = "select * from studentinfo where batch='".$_POST['batch']."'";
+		$pr_a = mysql_query($q);
+                echo "<div class='text-center'>";
+		$q2 = "select division from studentinfo where batch='".$_POST['batch']."'";
+		$pr2 = mysql_query($q2);
+                $division = mysql_fetch_array($pr2);
+
+                echo "<legend><strong><h3>Year: T.E &nbsp;&nbsp;&nbsp;&nbsp;Division : ".$division['division']." &nbsp;&nbsp;&nbsp;&nbsp;Batch : ".$_POST['batch']." </h3></strong></legend>";
+                echo "</div>";
+                echo "<div class='table-responsive'>";
+                echo "<table class='table table-hover table-bordered' style='width:1000px; margin:auto; margin-bottom:100px;'>";
+                echo "<tr>";
+                echo "<td>RollNo</td>";
+                echo "<td>Firstname</td>";
+                echo "<td>Lastname</td>";
+                // echo "<td>Year</td>";
+                // echo "<td>Division</td>";
+                // echo "<td>Batch</td>";
+                echo "<td>Attendance</td>";
+                echo "</tr>";
+		
+                while ($row = mysql_fetch_array($pr_a)) 
+                {  
+//                   echo '<pre>'; print_r($row); echo '</pre>';
+		   echo "<tr>";
+                   echo "<td>".$row['rollno']."</td>";
+                   echo "<td>".$row['firstname']."</td>";
+                   echo "<td>".$row['lastname']."</td>";
+                   // echo "<td>".$row['year']."</td>";
+                   // echo "<td>".$row['division']."</td>";
+                   // echo "<td>".$row['batch']."</td>";
+                   // echo "<td><input type='checkbox' name='presentee[]' value='".$row['rollno']."'/>&nbsp;PRESENT</td>";
+                   echo "</tr>";
+                }
+                echo "</table>";
+                echo "</div>";
+              }
+              }
+
+              
+            ?> 
+</form>
+   </div>
+</div>
+  </body>
+</html>

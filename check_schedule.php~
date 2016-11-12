@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title></title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+<style type="text/css">
+   .logo
+        {
+            height:30px; 
+            width:160px;
+        }
+
+         ul{
+            margin-top: 10px;
+        }
+
+        .nav-tabs{
+            border-bottom: 0px;
+        }
+</style>
+</head>
+<body>
+
+	<nav class="navbar navbar-default">
+    <div class="navbar-header"> 
+        <a href="#" class="navbar-brand"><img src="mit_logo.png" class="logo"  /></a>
+    </div>
+    <div>
+        <ul class="nav nav-tabs" role="tablist">
+        <li><a href="teachers_main.php">Main</a></li>
+        <li><a href="about.php">About</a></li>
+        <li class="active"><a href="#">Check Schedule</a></li>
+        <li><a href="Enter_Attendance.php">Enter Attendance</a></li>
+        <li><a href="subject_details.php">Subject Details</a></li>
+        <a href="Home.php" style="margin-right:10px; float:right;" class="btn btn-danger">Logout</a>
+        </ul>
+    </div>
+</nav> 	
+        
+</body>
+</html>

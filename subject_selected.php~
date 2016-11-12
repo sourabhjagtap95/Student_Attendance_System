@@ -1,0 +1,63 @@
+<?php
+
+require_once('authentication.php');
+session_start();
+
+if(isset($_SESSION['CurrentUser'])){
+    // echo $_SESSION['CurrentUser'];
+    // echo $_SESSION['tid'];
+}
+$tid = $_SESSION['tid'];
+
+/*for division A*/
+$th_id_a = $_POST['theory_a'];
+$practical_id_a = $_POST['practical_a'];
+$batch_arr_a=$_POST['batch_a'];
+$batch_a=implode(",",$batch_arr_a);
+//echo "theory:" .$th_id_a;
+//echo "practical:" .$practical_id_a;
+
+
+
+//connecting to database
+$conn = mysql_connect("localhost","root","");
+mysql_select_db("project_new",$conn);
+
+$query_a = "insert into loadinfo_a(tid,sub_th_id,sub_pr_id,batch) values('$tid','$th_id_a','$practical_id_a','$batch_a')";
+// echo $query_a;
+mysql_query($query_a);
+
+
+/*for division B*/
+$th_id_b = $_POST['theory_b'];
+$practical_id_b = $_POST['practical_b'];
+$batch_arr_b=$_POST['batch_b'];
+$batch_b=implode(",",$batch_arr_b);
+//echo "theory:" .$th_id_b;
+//echo "practical:" .$practical_id_b;
+
+$query_b = "insert into loadinfo_b(tid,sub_th_id,sub_pr_id,batch) values('$tid','$th_id_b','$practical_id_b','$batch_b')";
+//echo $query_b;
+
+$_SESSION['theory_a']= $th_id_a;
+$_SESSION['theory_b']= $th_id_b;
+$_SESSION['practical_a']= $practical_id_a;
+$_SESSION['practical_b']= $practical_id_b;
+$_SESSION['batch_a']= $batch_a;
+$_SESSION['batch_b']= $batch_b;
+
+if(mysql_query($query_b))
+	header('Location: teachers_main.php');
+
+//mysqli_query($conn,"insert into loadinfo(tid,sub_th_id,sub_pr_id) values('$tid','$sub_id','$practical_id')") or die(mysqli_error($conn));
+//$division = implode(', ', $_POST['division']);
+//mysqli_query($conn,"update loadinfo set division='".$division."' where tid='$tid'") or die(mysqli_error($conn));
+
+//$batch = implode(', ', $_POST['batch']);
+//mysqli_query($conn,"update loadinfo set batch='".$batch."' where tid='$tid'") or die(mysqli_error($conn));
+
+/*Goto Next Page*/
+
+
+	
+?>
